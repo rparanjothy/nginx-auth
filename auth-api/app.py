@@ -1,11 +1,17 @@
-from flask import Flask,request
+from flask import Flask,request,make_response
 
 app = Flask(__name__)
 
 @app.route("/validate")
 def f():
     print(request.headers)
-    return "ok",200
+    resp=make_response()
+    resp.headers["X-msg"]="777"
+    if request.headers.get("Username","-") != "Ram" :
+        return "Unauthorized", 401
+    resp.set_cookie("msg","PraiseGod!",30)
+    print(resp)
+    return resp
 
 @app.route("/error")
 def f1():
